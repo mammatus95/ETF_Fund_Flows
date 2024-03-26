@@ -22,5 +22,12 @@ conda activate etfflow
 
 ## How to run?
 
+```bash
+conda activate etfflow
+
+python3 fund_flows.py
+```
+
 ## Some Results
-<img src="./images/example/Screenshot 2024-03-04 093619.jpg" alt="Example"/>
+<img src="./images/example/flow_plotter_TLT.png" alt="Example"/>
+<img src="./images/example/SPY.png" alt="Example"/>

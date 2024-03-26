@@ -1,0 +1,44 @@
+etf_bonds:
+  TLT    : 20+ Year Treasury Bond ETF
+  TLH    : 10-20 Year Treasury Bond ETF
+  IEF    : 7-10 Year Treasury Bond ETF
+  IEI    : 3-7 Year Treasury Bond ETF
+  SHY    : 1-3 Year Treasury Bond ETF
+  SHV    : Short Treasury Bond ETF
+  SGOV   : 0-3 Month Treasury Bond ETF
+  TIP    : TIPS Bond ETF
+  HYG    : High Yield Corporate Bond
+  VCSH   : Short-Term Corporate Bond ETF
+  EDV    : Vanguard Extended Duration Treasury ETF
+  ZROZ   : PIMCO 25+ Year Zero Coupon U.S. Treasury ETF
+  VGLT   : Vanguard Long-Term Treasury ETF
+  VGIT   : Vanguard Intermediate-Term Treasury ETF
+  EMB    : Emerging Markets Bond ETF
+  
+etf_stocks:
+  SPY    : SPDR S&P 500 ETF
+  IVV    : Core S&P 500 ETF
+  QQQ    : Nasdaq 100 ETF
+  SOXX   : Semiconductor ETF
+  KRE    : S&P Regional Banking ETF
+  
+fonds_energy:
+  XLE    : Energy Sector ETF
+  USO    : United States Oil Fund
+
+date_from: "2000-01-01"
+date_to  : "2024-03-19"
+raw_path : "./"
+back_idx : 450
+
+# clo_tickers = ["JAAA", "AAA", "CLOA", "JBBB", "CLOI", "CLOZ", "ICLO"]
+# mbs_tickers = ["VMBS", "MBB", "SPMB", "JMBS", "JSI", "LMBS", "JMBS", "CMBS", "MTBA"]
+# credit_tickers = ["VGIT", "VGLT", "LQD", "ICSH", "FLOT"]
+# vix_tickers = ["VXX", "UVXY", "SVXY", "VIXY", "SVOL"]
+# metals_tickers = ["GLD", "IAU", "SGOL", "GLTR", "SLV", "GLDM"]
+# china_tickers = ["MCHI", "KWEB", "FXI", "YINN", "CWEB", "CHIQ"]
+# hk_tickers = ["EWH", "FLHK"]
+# india_tickers = ["INDA", "EPI", "SMIN", "PIN", "INCO", "INQQ"]
+# alts_tickers = ["TUA", "TYA", "SVOL", "PFIX"]
+# japan_tickers = ["EWJ", "BBJP", "DXJ", "HEWJ", "JPXN"]
+
