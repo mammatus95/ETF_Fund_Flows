@@ -1,0 +1,17 @@
+name: backtesttrade
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy=1.26.3
+  - pandas=2.2.0
+  - scipy=1.12.0
+  - scikit-learn=1.4
+  - ta=0.11.0
+  - yfinance=0.2.36
+  - matplotlib=3.8.1
+  - seaborn=0.13.1
+  - mplfinance
+  - bokeh=3.3.4
+  - pyaml=20.4.0
+  - scikit-optimize=0.9.0
