@@ -10,6 +10,7 @@ import yaml
 # project moduls
 import yahoofinance as yf_modul
 import plots as plot_modul
+
 # ----------------------------------------------------------------------------------------------------------------------------
 
 headers = {

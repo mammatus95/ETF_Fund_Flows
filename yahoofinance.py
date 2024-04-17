@@ -21,8 +21,6 @@ def download_symbol_from_yf(symbol, start_date, end_date, interval="1d"):
     IOError: if there is a problem with the input/output operation,
              such as issues with network connectivity or file system errors.
     KeyError: if the data returned from Yahoo Finance does not contain the expected keys.
-    HTTPError:  when there is an issue with the HTTP request,
-                such as when the server returns an error response (e.g., 404 Not Found).
     TimeoutError: when the request to Yahoo Finance times out due to slow network connectivity
     ConnectionError: when there is a problem establishing a connection to the Yahoo Finance server,
                      such as when the server is down or when there are network connectivity issues.
@@ -46,10 +44,6 @@ def download_symbol_from_yf(symbol, start_date, end_date, interval="1d"):
     except ConnectionError as e:
         print(f"IndexError for {symbol}. \nError-Message: {e}")
         print("This usally happens when there is a problem establishing a connection to the Yahoo Finance server. ")
-        return -1
-    except HTTPError as e:
-        print(f"HTTPError for {symbol}. \nError-Message: {e}")
-        print("This usally happens when there is an issue with the HTTP request. ")
         return -1
     except TimeoutError as e:
         print(f"TimeoutError for {symbol}. \nError-Message: {e}")

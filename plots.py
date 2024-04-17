@@ -121,6 +121,7 @@ def plot_stock_info(ticker, fund_flow_df, back_idx, flowflag=True):
     ax2.set_ylim(np.round(fund_flow_df.AdjClose[-back_idx:].min(), 0), np.round(fund_flow_df.AdjClose[-back_idx:].max(), 0))
     ax2_flow_limit=np.max(flow)*1.1
     ax2.set_xlim(0, ax2_flow_limit)
+    ax2.set_xlabel("Fund Movement ($1e6)")
 
     # historic price action
     fund_flow_df.tail(back_idx)[["AdjClose"]].plot(title=ticker, ax=ax1, legend=False)
@@ -134,7 +135,6 @@ def plot_stock_info(ticker, fund_flow_df, back_idx, flowflag=True):
             np.round(fund_flow_df.AdjClose[-back_idx:].min(), 0) + (fund_flow_df.negative[-back_idx:]*(-1)/flow_max) * (fund_flow_df.AdjClose[-back_idx:].min()*0.08), 
             color="navy", zorder=1, label="flow out")
     ax1.grid(False)
-    ax1.set_xlabel("Fund Movement ($1e6)")
 
     fig.legend(bbox_to_anchor=(0.33, 0.95), fontsize=10, title='Legende')
 
