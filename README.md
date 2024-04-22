@@ -24,7 +24,7 @@ conda activate etfflow
 
 ```bash
 conda activate etfflow
-
+cd src
 python3 fund_flows.py
 ```
 

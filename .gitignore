@@ -1,12 +1,9 @@
 # ignore ALL .log files
-*.db
-*/*.db
+**.db
 
+**.ipynb_checkpoints/
 
-.ipynb_checkpoints/
-*/.ipynb_checkpoints/
-
-*/*.csv
+**.csv
 
 *.png
 */*.png

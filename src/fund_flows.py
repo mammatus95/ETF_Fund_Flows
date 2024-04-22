@@ -1,10 +1,8 @@
 from datetime import date, datetime
-from typing import Dict, List
 import time
 
 import pandas as pd
 import requests
-import json
 import yaml
 
 # project moduls
@@ -38,6 +36,7 @@ headers = {
 
 # ----------------------------------------------------------------------------------------------------------------------------
 
+
 def fetch_fund_flow_data(ticker, date_from: date, date_to: date, raw_path: str = None):
     """"
     Parameters:
@@ -49,22 +48,19 @@ def fetch_fund_flow_data(ticker, date_from: date, date_to: date, raw_path: str =
     pandas pandas.dataframe or None
     
     """
-    
     date_from_str = date_from.strftime("%Y%m%d")
     date_to_str = date_to.strftime("%Y%m%d")
 
     headers.update({"path" : f"/private/apps/fundflows/{ticker}/charts?startDate={date_from_str}&endDate={date_to_str}"})
 
     url = (f"https://api-prod.etf.com/private/apps/fundflows/"
-           f"{ticker}/charts?startDate={date_from_str}&endDate={date_to_str}"
-          )
+           f"{ticker}/charts?startDate={date_from_str}&endDate={date_to_str}")
 
     # print(url)
     res = requests.get(url, headers=headers)
-    
+
     if res.ok:
         json_data = res.json()
-        
         try:
             df = pd.DataFrame(json_data["data"]["results"]["data"])
             # print(df)
@@ -81,8 +77,8 @@ def fetch_fund_flow_data(ticker, date_from: date, date_to: date, raw_path: str =
 
 # ----------------------------------------------------------------------------------------------------------------------------
 
+
 def create_fund_flow_df(flow_df, pice_df):
-    
     merged_df = pd.merge(flow_df, pice_df, how='inner', on="Date", left_index=False, right_index=False)
     merged_df["negative"] = merged_df["value"]
     merged_df["positive"] = merged_df["value"]
@@ -91,6 +87,7 @@ def create_fund_flow_df(flow_df, pice_df):
     return merged_df
 
 # ----------------------------------------------------------------------------------------------------------------------------
+
 
 def load_yaml(yaml_file, yaml_path='./'):
     """
@@ -113,14 +110,13 @@ if __name__ == "__main__":
     date_to  = datetime.today()
     raw_path = config['raw_path']
     back_idx = config['back_idx']
-    tickers  = {**config['etf_bonds'], 
-                **config['etf_stocks'],  
+    tickers  = {**config['etf_bonds'],
+                **config['etf_stocks'],
                 # **config['etf_'],
                 }
-    
+
     # start time profiling
     t1 = time.time()
-    
 
     for ticker in tickers:
         print(f"Ticker: {ticker} Time: {round(time.time() - t1,2)} seconds")
@@ -137,8 +133,6 @@ if __name__ == "__main__":
         plot_modul.plot_stock_info(ticker, fund_flow_df, back_idx, flowflag=True)
         plot_modul.fund_flow_plotter(ticker, fund_flow_df, date_subset_range=[datetime(2020, 1, 1), datetime.today()], 
                                      tick_freq=25, plot_volume=True, plot_price=True)
-
-
 
     t2 = time.time()
     print(f"\nTime profiling: {round(t2 - t1,2)} seconds")

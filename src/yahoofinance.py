@@ -1,6 +1,7 @@
 import yfinance as yf
 import pandas as pd
 
+
 def download_symbol_from_yf(symbol, start_date, end_date, interval="1d"):
     """
     Parameters:
