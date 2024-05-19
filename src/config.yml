@@ -21,14 +21,14 @@ etf_stocks:
   QQQ    : Nasdaq 100 ETF
   SOXX   : Semiconductor ETF
   KRE    : S&P Regional Banking ETF
-  
+  MCHI   : MSCI China ETF
+
 fonds_energy:
   XLE    : Energy Sector ETF
   USO    : United States Oil Fund
 
 date_from: "2000-01-01"
 date_to  : "2024-03-19"
-raw_path : "./"
 back_idx : 450
 
 # clo_tickers = ["JAAA", "AAA", "CLOA", "JBBB", "CLOI", "CLOZ", "ICLO"]

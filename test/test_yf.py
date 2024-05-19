@@ -1,13 +1,10 @@
 #!/usr/bin/python3
-import sys
 import unittest
 from datetime import datetime
 import pandas as pd
-from unittest.mock import patch
 
-# project moduls
-sys.path.append('../src/')
-from yahoofinance import download_symbol_from_yf
+# project modul
+from src.yahoofinance import download_symbol_from_yf
 
 
 class TestDownloadYF(unittest.TestCase):

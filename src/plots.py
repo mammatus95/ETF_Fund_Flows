@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from matplotlib.gridspec import GridSpec
-import pandas as pd
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------------
@@ -65,7 +64,7 @@ def flowprofilebyprice(df, back_idx, smoothing=True, window_size=3):
 
 
 def basic_plot(ticker, fund_flow_df):
-    fig = plt.figure(figsize=(16,8), constrained_layout=True)
+    fig = plt.figure(figsize=(16, 8), constrained_layout=True)
     ax = fig.add_subplot()
     fund_flow_df[["value"]].plot(ax=ax, legend=False)
     plt.savefig(f"./images/basic_plot_{ticker}.png")
@@ -75,8 +74,8 @@ def basic_plot(ticker, fund_flow_df):
 
 
 def flow_plot(ticker, fund_flow_df):
-    back_idx=450
-    fig = plt.figure(figsize=(16,8), constrained_layout=True)
+    back_idx = 450
+    fig = plt.figure(figsize=(16, 8), constrained_layout=True)
     ax = fig.add_subplot()
     ax.bar(fund_flow_df.index[-back_idx:], fund_flow_df.negative[-back_idx:], color="red", zorder=0, lw=1.1, label="outflow")
     ax.bar(fund_flow_df.index[-back_idx:], fund_flow_df.positive[-back_idx:], color="green", zorder=0, lw=1.1, label="inflow")
@@ -100,11 +99,11 @@ def flow_plot(ticker, fund_flow_df):
 # ----------------------------------------------------------------------------------------------------------------------------
 
 
-def plot_stock_info(ticker, fund_flow_df, back_idx, flowflag=True):
+def plot_stock_info(ticker, fund_flow_df, back_idx, longname, flowflag=True):
     
     price, flow, flow_in, flow_out, steps = flowprofilebyprice(fund_flow_df, back_idx, smoothing=True, window_size=3)
 
-    fig = plt.figure(figsize=(16,8), constrained_layout=True)
+    fig = plt.figure(figsize=(16, 8), constrained_layout=True)
     gs = GridSpec(1, 3, figure=fig)
     # define subplots
     ax1 = fig.add_subplot(gs[0, 1:])
@@ -119,21 +118,25 @@ def plot_stock_info(ticker, fund_flow_df, back_idx, flowflag=True):
     else:
         ax2.barh(price, flow, height=steps)
 
-    ax2.set_ylim(np.round(fund_flow_df.AdjClose[-back_idx:].min(), 0), np.round(fund_flow_df.AdjClose[-back_idx:].max(), 0))
-    ax2_flow_limit=np.max(flow)*1.1
+    ax2.set_ylim(np.round(fund_flow_df.AdjClose[-back_idx:].min(), 0), 
+                 np.round(fund_flow_df.AdjClose[-back_idx:].max(), 0) + np.round(fund_flow_df.AdjClose[-back_idx:].max()*0.01, 0))
+    ax2_flow_limit = np.max(flow)*1.1
     ax2.set_xlim(0, ax2_flow_limit)
     ax2.set_xlabel("Fund Movement ($1e6)")
 
     # historic price action
-    fund_flow_df.tail(back_idx)[["AdjClose"]].plot(title=ticker, ax=ax1, legend=False)
-    ax1.set_ylim(np.round(fund_flow_df.AdjClose[-back_idx:].min(), 0), np.round(fund_flow_df.AdjClose[-back_idx:].max(), 0))
+    fund_flow_df.tail(back_idx)[["AdjClose"]].plot(title=f"{longname} ({ticker})", ax=ax1, legend=False)
+    ax1.set_ylim(np.round(fund_flow_df.AdjClose[-back_idx:].min(), 0), 
+                 np.round(fund_flow_df.AdjClose[-back_idx:].max(), 0) + np.round(fund_flow_df.AdjClose[-back_idx:].max()*0.01, 0))
     flow_max = fund_flow_df.value[-back_idx:].max()
 
-    ax1.bar(fund_flow_df.index[-back_idx:], 
-            np.round(fund_flow_df.AdjClose[-back_idx:].min(), 0) + (fund_flow_df.positive[-back_idx:]/flow_max) * (fund_flow_df.AdjClose[-back_idx:].min()*0.08),
+    ax1.bar(fund_flow_df.index[-back_idx:],
+            np.round(fund_flow_df.AdjClose[-back_idx:].min(), 0) +
+                     (fund_flow_df.positive[-back_idx:]/flow_max) * (fund_flow_df.AdjClose[-back_idx:].min()*0.08),
             color="orange", zorder=1, label="flow in")
-    ax1.bar(fund_flow_df.index[-back_idx:], 
-            np.round(fund_flow_df.AdjClose[-back_idx:].min(), 0) + (fund_flow_df.negative[-back_idx:]*(-1)/flow_max) * (fund_flow_df.AdjClose[-back_idx:].min()*0.08),
+    ax1.bar(fund_flow_df.index[-back_idx:],
+            np.round(fund_flow_df.AdjClose[-back_idx:].min(), 0) +
+                     (fund_flow_df.negative[-back_idx:]*(-1)/flow_max) * (fund_flow_df.AdjClose[-back_idx:].min()*0.08),
             color="navy", zorder=1, label="flow out")
     ax1.grid(False)
 
@@ -146,7 +149,7 @@ def plot_stock_info(ticker, fund_flow_df, back_idx, flowflag=True):
 
 def fund_flow_plotter(ticker, fund_flow_df, date_subset_range,
                       tick_freq=25, custom_title=None, plot_volume=True, plot_price=True):
-    
+
     # date range
     plot_df = fund_flow_df[(fund_flow_df.index > date_subset_range[0])
                            & (fund_flow_df.index < date_subset_range[1])]
@@ -165,7 +168,7 @@ def fund_flow_plotter(ticker, fund_flow_df, date_subset_range,
     plt.xticks(rotation=45)
     plt.grid(visible=True, linestyle="--", linewidth=0.5)
     ax.axhline(0, color="black", linewidth=0.6)
-    
+
     ax.bar(plot_df.index, plot_df.negative,  color="red", zorder=0, lw=1.1, label="outflow")
     ax.bar(plot_df.index, plot_df.positive,   color="green", zorder=0, lw=1.1, label="inflow")
 

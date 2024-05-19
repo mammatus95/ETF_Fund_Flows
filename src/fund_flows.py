@@ -14,7 +14,7 @@ import plots as plot_modul
 headers = {
     "authority": "api-prod.etf.com",
     "method": "GET",
-    "path": f"/private/apps/fundflows/SPY/charts?startDate=2022-01-01&endDate=2023-01-01",
+    "path": "/private/apps/fundflows/SPY/charts?startDate=2022-01-01&endDate=2023-01-01",
     "scheme": "https",
     "Accept": "application/json,text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
     "Accept-Encoding": "gzip, deflate, br, zstd",
@@ -37,7 +37,7 @@ headers = {
 # ----------------------------------------------------------------------------------------------------------------------------
 
 
-def fetch_fund_flow_data(ticker, date_from: date, date_to: date, raw_path: str = None):
+def fetch_fund_flow_data(ticker, date_from: date, date_to: date):
     """"
     Parameters:
     -----------
@@ -46,12 +46,11 @@ def fetch_fund_flow_data(ticker, date_from: date, date_to: date, raw_path: str =
     Returns:
     ---------
     pandas pandas.dataframe or None
-    
     """
     date_from_str = date_from.strftime("%Y%m%d")
     date_to_str = date_to.strftime("%Y%m%d")
 
-    headers.update({"path" : f"/private/apps/fundflows/{ticker}/charts?startDate={date_from_str}&endDate={date_to_str}"})
+    headers.update({"path": f"/private/apps/fundflows/{ticker}/charts?startDate={date_from_str}&endDate={date_to_str}"})
 
     url = (f"https://api-prod.etf.com/private/apps/fundflows/"
            f"{ticker}/charts?startDate={date_from_str}&endDate={date_to_str}")
@@ -82,8 +81,8 @@ def create_fund_flow_df(flow_df, pice_df):
     merged_df = pd.merge(flow_df, pice_df, how='inner', on="Date", left_index=False, right_index=False)
     merged_df["negative"] = merged_df["value"]
     merged_df["positive"] = merged_df["value"]
-    merged_df.loc[merged_df["negative"]>0, "negative"] = 0
-    merged_df.loc[merged_df["positive"]<0, "positive"] = 0
+    merged_df.loc[merged_df["negative"] > 0, "negative"] = 0
+    merged_df.loc[merged_df["positive"] < 0, "positive"] = 0
     return merged_df
 
 # ----------------------------------------------------------------------------------------------------------------------------
@@ -106,33 +105,37 @@ if __name__ == "__main__":
     # load config
     config = load_yaml('config.yml')
 
-    date_from= datetime.strptime(config['date_from'], "%Y-%m-%d")
-    date_to  = datetime.today()
-    raw_path = config['raw_path']
+    date_from = datetime.strptime(config['date_from'], "%Y-%m-%d")
+    date_to = datetime.today()
     back_idx = config['back_idx']
-    tickers  = {**config['etf_bonds'],
-                **config['etf_stocks'],
-                # **config['etf_'],
-                }
+    tickers = {**config['etf_bonds'],
+               **config['etf_stocks'],
+               # **config['etf_'],
+              }
 
     # start time profiling
     t1 = time.time()
 
     for ticker in tickers:
-        print(f"Ticker: {ticker} Time: {round(time.time() - t1,2)} seconds")
-        flow_df = fetch_fund_flow_data(ticker, date_from=date_from, date_to=date_to, raw_path=raw_path)
+        print(f"Ticker: {ticker} Time: {round(time.time() - t1, 2)} seconds")
+        flow_df = fetch_fund_flow_data(ticker, date_from=date_from, date_to=date_to)
         pice_df = yf_modul.download_symbol_from_yf(ticker, date_from.strftime('%Y-%m-%d'), date_to.strftime('%Y-%m-%d'))
         fund_flow_df = create_fund_flow_df(flow_df, pice_df)
 
         # print(fund_flow_df.head(10))
 
         # create plots
+        if ticker in config['etf_bonds']:
+            longname = config['etf_bonds'][ticker]
+        elif ticker in config['etf_stocks']:
+            longname = config['etf_stocks'][ticker]
 
-        #plot_modul.basic_plot(ticker, fund_flow_df)
+        # plot_modul.basic_plot(ticker, fund_flow_df)
         plot_modul.flow_plot(ticker, fund_flow_df)
-        plot_modul.plot_stock_info(ticker, fund_flow_df, back_idx, flowflag=True)
-        plot_modul.fund_flow_plotter(ticker, fund_flow_df, date_subset_range=[datetime(2020, 1, 1), datetime.today()], 
+        plot_modul.plot_stock_info(ticker, fund_flow_df, back_idx, longname, flowflag=True)
+        plot_modul.fund_flow_plotter(ticker, fund_flow_df, date_subset_range=[datetime(2020, 1, 1), datetime.today()],
                                      tick_freq=25, plot_volume=True, plot_price=True)
 
+
     t2 = time.time()
-    print(f"\nTime profiling: {round(t2 - t1,2)} seconds")
+    print(f"\nTime profiling: {round(t2 - t1, 2)} seconds")

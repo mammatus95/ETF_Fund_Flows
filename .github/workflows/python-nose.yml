@@ -1,12 +1,13 @@
 name: Unittest
 
-on:
-  push:
-    branches: [ "main" ]
+on: [push, pull_request_target, issues]
     
 jobs:
   build-linux:
     runs-on: ubuntu-latest
+
+    env:
+      PYTHONPATH: ${{ github.workspace }}
 
     steps:
     - uses: actions/checkout@v3
