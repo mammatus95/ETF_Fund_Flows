@@ -100,7 +100,7 @@ def flow_plot(ticker, fund_flow_df):
 
 
 def plot_stock_info(ticker, fund_flow_df, back_idx, longname, flowflag=True):
-    
+
     price, flow, flow_in, flow_out, steps = flowprofilebyprice(fund_flow_df, back_idx, smoothing=True, window_size=3)
 
     fig = plt.figure(figsize=(16, 8), constrained_layout=True)
@@ -118,7 +118,7 @@ def plot_stock_info(ticker, fund_flow_df, back_idx, longname, flowflag=True):
     else:
         ax2.barh(price, flow, height=steps)
 
-    ax2.set_ylim(np.round(fund_flow_df.AdjClose[-back_idx:].min(), 0), 
+    ax2.set_ylim(np.round(fund_flow_df.AdjClose[-back_idx:].min(), 0),
                  np.round(fund_flow_df.AdjClose[-back_idx:].max(), 0) + np.round(fund_flow_df.AdjClose[-back_idx:].max()*0.01, 0))
     ax2_flow_limit = np.max(flow)*1.1
     ax2.set_xlim(0, ax2_flow_limit)
@@ -126,7 +126,7 @@ def plot_stock_info(ticker, fund_flow_df, back_idx, longname, flowflag=True):
 
     # historic price action
     fund_flow_df.tail(back_idx)[["AdjClose"]].plot(title=f"{longname} ({ticker})", ax=ax1, legend=False)
-    ax1.set_ylim(np.round(fund_flow_df.AdjClose[-back_idx:].min(), 0), 
+    ax1.set_ylim(np.round(fund_flow_df.AdjClose[-back_idx:].min(), 0),
                  np.round(fund_flow_df.AdjClose[-back_idx:].max(), 0) + np.round(fund_flow_df.AdjClose[-back_idx:].max()*0.01, 0))
     flow_max = fund_flow_df.value[-back_idx:].max()
 
