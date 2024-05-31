@@ -6,4 +6,5 @@ scikit-learn
 ta
 yfinance
 mplfinance
+pyyaml
 nose2==0.9.2
